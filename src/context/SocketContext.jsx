@@ -1,30 +1,42 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { createContext, useContext, useEffect, useState } from "react";
+import SockJS from "sockjs-client";
+import { Client } from "@stomp/stompjs";
 
-const SocketContext = createContext();
+const SocketContext = createContext(null);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSocket = () => {
-  const context = useContext(SocketContext);
-  if (!context) {
-    throw new Error('useSocket must be used within SocketProvider');
-  }
-  return context;
+  return useContext(SocketContext);
 };
 
 export const SocketProvider = ({ children }) => {
-  const [socket, setSocket] = useState(null);
+  const [stompClient, setStompClient] = useState(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:8081');
-    setSocket(newSocket);
+    const socket = new SockJS("http://localhost:8081/ws");
+
+    const client = new Client({
+      webSocketFactory: () => socket,
+      reconnectDelay: 5000,
+      onConnect: () => {
+        console.log("✅ WebSocket Connected");
+      },
+      onStompError: (frame) => {
+        console.error("❌ STOMP error", frame);
+      }
+    });
+
+    client.activate();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setStompClient(client);
 
     return () => {
-      newSocket.close();
+      client.deactivate();
     };
   }, []);
 
   return (
-    <SocketContext.Provider value={socket}>
+    <SocketContext.Provider value={stompClient}>
       {children}
     </SocketContext.Provider>
   );

@@ -5,7 +5,7 @@ import { formatCurrency } from '../../utils/formatCurrency';
 import Loader from '../../components/common/Loader';
 import Button from '../../components/common/Button';
 
-const InvoiceDetails = () => {
+export const InvoiceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [invoice, setInvoice] = useState(null);

@@ -5,38 +5,34 @@ import { Client } from "@stomp/stompjs";
 const SocketContext = createContext(null);
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const useSocket = () => {
-  return useContext(SocketContext);
-};
+export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
-  const [stompClient, setStompClient] = useState(null);
+  const [client, setClient] = useState(null);
 
   useEffect(() => {
-    const socket = new SockJS("http://localhost:8081/ws");
-
-    const client = new Client({
-      webSocketFactory: () => socket,
+    const stompClient = new Client({
+      webSocketFactory: () => new SockJS("http://localhost:8081/ws"),
       reconnectDelay: 5000,
+
       onConnect: () => {
         console.log("✅ WebSocket Connected");
       },
+
       onStompError: (frame) => {
-        console.error("❌ STOMP error", frame);
-      }
+        console.error("❌ STOMP Error", frame);
+      },
     });
 
-    client.activate();
+    stompClient.activate();
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setStompClient(client);
+    setClient(stompClient);
 
-    return () => {
-      client.deactivate();
-    };
+    return () => stompClient.deactivate();
   }, []);
 
   return (
-    <SocketContext.Provider value={stompClient}>
+    <SocketContext.Provider value={client}>
       {children}
     </SocketContext.Provider>
   );

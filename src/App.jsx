@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { SocketProvider } from './context/SocketContext'
-// import AppRoutes from './routes/AppRoutes'
+import AppRoutes from './routes/AppRoutes'
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
     }}>
       <AuthProvider>
         <SocketProvider>
-          {/* <AppRoutes /> */}
+          <AppRoutes />
         </SocketProvider>
       </AuthProvider>
     </BrowserRouter>

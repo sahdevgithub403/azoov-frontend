@@ -1,9 +1,22 @@
-const App = () => {
-  return (
-    <>
-      <h1>Ready To make new something</h1>
-    </>
-  );
-};
+import { BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import { SocketProvider } from './context/SocketContext'
+// import AppRoutes from './routes/AppRoutes'
 
-export default App;
+function App() {
+  return (
+    <BrowserRouter  future={{
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+    }}>
+      <AuthProvider>
+        <SocketProvider>
+          {/* <AppRoutes /> */}
+        </SocketProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  )
+}
+
+export default App
+

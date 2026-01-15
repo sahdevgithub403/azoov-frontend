@@ -13,7 +13,7 @@ import { getInvoices } from "../../api/invoiceApi";
 import { getProducts } from "../../api/productApi";
 import { getCustomers } from "../../api/customerApi";
 import { formatCurrency } from "../../utils/formatCurrency";
-import { Loader } from "../../components/common/Loader";
+import Loader from "../../components/common/Loader";
 
 export const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -214,21 +214,19 @@ export const Dashboard = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => setSelectedYear("This Year")}
-                className={`px-3 py-1 rounded text-sm ${
-                  selectedYear === "This Year"
+                className={`px-3 py-1 rounded text-sm ${selectedYear === "This Year"
                     ? "bg-primary-500 text-white"
                     : "bg-gray-100"
-                }`}
+                  }`}
               >
                 This Year
               </button>
               <button
                 onClick={() => setSelectedYear("Last Year")}
-                className={`px-3 py-1 rounded text-sm ${
-                  selectedYear === "Last Year"
+                className={`px-3 py-1 rounded text-sm ${selectedYear === "Last Year"
                     ? "bg-primary-500 text-white"
                     : "bg-gray-100"
-                }`}
+                  }`}
               >
                 Last Year
               </button>

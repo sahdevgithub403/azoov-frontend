@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { getInvoices, updateInvoiceStatus } from '../../api/invoiceApi';
 import { formatCurrency } from '../../utils/formatCurrency';
@@ -19,13 +19,13 @@ const InvoiceList = () => {
 
   useEffect(() => {
     fetchInvoices();
-  }, []);
+  }, [fetchInvoices]);
 
   useEffect(() => {
     filterInvoices();
   }, [invoices, searchQuery, dateFilter, statusFilter, filterInvoices]);
 
-  const fetchInvoices = async () => {
+  const fetchInvoices = useCallback(async () => {
     try {
       const response = await getInvoices();
       setInvoices(response.data || []);
@@ -35,10 +35,10 @@ const InvoiceList = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const filterInvoices = () => {
+  const filterInvoices = useCallback(() => {
     let filtered = [...invoices];
 
     if (searchQuery) {
@@ -63,7 +63,7 @@ const InvoiceList = () => {
 
     setFilteredInvoices(filtered);
     setCurrentPage(1);
-  };
+  }, [invoices, searchQuery, dateFilter, statusFilter]);
 
   const handleStatusChange = async (id, newStatus) => {
     try {

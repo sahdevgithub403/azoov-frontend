@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { getProducts, getLowStockProducts, deleteProduct } from '../../api/productApi';
+import { getProducts, deleteProduct } from '../../api/productApi';
 import { formatCurrency } from '../../utils/formatCurrency';
 import Loader from '../../components/common/Loader';
 import Button from '../../components/common/Button';
@@ -18,13 +18,13 @@ const InventoryList = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
 
   useEffect(() => {
     filterProducts();
-  }, [products, searchQuery, categoryFilter, stockFilter]);
+  }, [products, searchQuery, categoryFilter, stockFilter, filterProducts]);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       const response = await getProducts();
       setProducts(response.data || []);
@@ -34,9 +34,9 @@ const InventoryList = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const filterProducts = () => {
+  const filterProducts = useCallback(() => {
     let filtered = [...products];
 
     if (searchQuery) {
@@ -59,7 +59,7 @@ const InventoryList = () => {
 
     setFilteredProducts(filtered);
     setCurrentPage(1);
-  };
+  }, [products, searchQuery, categoryFilter, stockFilter]);
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
@@ -212,9 +212,8 @@ const InventoryList = () => {
                         <span>{product.stockLevel}</span>
                         <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-24">
                           <div
-                            className={`h-2 rounded-full ${
-                              isLowStock ? 'bg-orange-500' : 'bg-green-500'
-                            }`}
+                            className={`h-2 rounded-full ${isLowStock ? 'bg-orange-500' : 'bg-green-500'
+                              }`}
                             style={{ width: `${stockPercentage}%` }}
                           ></div>
                         </div>
@@ -222,11 +221,10 @@ const InventoryList = () => {
                     </td>
                     <td className="py-4">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                          isLowStock
-                            ? 'bg-orange-100 text-orange-600'
-                            : 'bg-green-100 text-green-600'
-                        }`}
+                        className={`px-2 py-1 rounded-full text-xs font-semibold ${isLowStock
+                          ? 'bg-orange-100 text-orange-600'
+                          : 'bg-green-100 text-green-600'
+                          }`}
                       >
                         {isLowStock ? 'Low Stock' : 'In Stock'}
                       </span>

@@ -1,0 +1,10 @@
+
+E:\Azoov\frontend\src\pages\invoices\CreateInvoice.jsx
+  119:21  error  'discount' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+E:\Azoov\frontend\src\pages\invoices\InvoiceDetails.jsx
+   2:21  error    'useNavigate' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                   no-unused-vars
+  17:9   warning  The 'fetchInvoice' function makes the dependencies of useEffect Hook (at line 15) change on every render. Move it inside the useEffect callback. Alternatively, wrap the definition of 'fetchInvoice' in its own useCallback() Hook  react-hooks/exhaustive-deps
+
+Γ£û 3 problems (2 errors, 1 warning)
+

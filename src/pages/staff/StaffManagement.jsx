@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getStaff } from "../../api/staffApi";
-import { Loader } from "../../components/common/Loader";
-import { Button } from "../../components/common/Button";
-import { Pagination } from "../../components/common/Pagination";
+import Loader from "../../components/common/Loader";
+import Button from "../../components/common/Button";
+import Pagination from "../../components/common/Pagination";
 
 export const StaffManagement = () => {
   const [staff, setStaff] = useState([]);

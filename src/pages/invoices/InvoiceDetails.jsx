@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
+import { useParams, Link } from 'react-router-dom';
 import { getInvoice } from '../../api/invoiceApi';
 import { formatCurrency } from '../../utils/formatCurrency';
 import Loader from '../../components/common/Loader';
@@ -7,24 +8,23 @@ import Button from '../../components/common/Button';
 
 export const InvoiceDetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [invoice, setInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchInvoice = async () => {
+      try {
+        const response = await getInvoice(id);
+        setInvoice(response.data);
+      } catch (error) {
+        console.error('Error fetching invoice:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchInvoice();
   }, [id]);
-
-  const fetchInvoice = async () => {
-    try {
-      const response = await getInvoice(id);
-      setInvoice(response.data);
-    } catch (error) {
-      console.error('Error fetching invoice:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return (

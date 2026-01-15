@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import {
   BarChart,
@@ -27,11 +27,7 @@ export const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [selectedYear, setSelectedYear] = useState("This Year");
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       const [invoicesRes, productsRes, customersRes] = await Promise.all([
         getInvoices(),
@@ -93,7 +89,11 @@ export const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   const getTimeAgo = (date) => {
     const seconds = Math.floor((new Date() - date) / 1000);
@@ -215,8 +215,8 @@ export const Dashboard = () => {
               <button
                 onClick={() => setSelectedYear("This Year")}
                 className={`px-3 py-1 rounded text-sm ${selectedYear === "This Year"
-                    ? "bg-primary-500 text-white"
-                    : "bg-gray-100"
+                  ? "bg-primary-500 text-white"
+                  : "bg-gray-100"
                   }`}
               >
                 This Year
@@ -224,8 +224,8 @@ export const Dashboard = () => {
               <button
                 onClick={() => setSelectedYear("Last Year")}
                 className={`px-3 py-1 rounded text-sm ${selectedYear === "Last Year"
-                    ? "bg-primary-500 text-white"
-                    : "bg-gray-100"
+                  ? "bg-primary-500 text-white"
+                  : "bg-gray-100"
                   }`}
               >
                 Last Year

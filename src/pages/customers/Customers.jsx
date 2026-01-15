@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { getCustomers, createCustomer, updateCustomer, deleteCustomer, searchCustomers } from '../../api/customerApi';
 import Loader from '../../components/common/Loader';
 import Button from '../../components/common/Button';
@@ -25,7 +25,7 @@ const Customers = () => {
 
   useEffect(() => {
     fetchCustomers();
-  }, []);
+  }, [fetchCustomers]);
 
   useEffect(() => {
     if (searchQuery) {
@@ -33,9 +33,9 @@ const Customers = () => {
     } else {
       setFilteredCustomers(customers);
     }
-  }, [searchQuery, customers]);
+  }, [searchQuery, customers, handleSearch]);
 
-  const fetchCustomers = async () => {
+  const fetchCustomers = useCallback(async () => {
     try {
       const response = await getCustomers();
       setCustomers(response.data || []);
@@ -45,9 +45,9 @@ const Customers = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     if (!searchQuery.trim()) {
       setFilteredCustomers(customers);
       return;
@@ -58,7 +58,7 @@ const Customers = () => {
     } catch (error) {
       console.error('Error searching customers:', error);
     }
-  };
+  }, [searchQuery, customers]);
 
   const handleOpenModal = (customer = null) => {
     if (customer) {
@@ -224,11 +224,10 @@ const Customers = () => {
                 <td className="px-6 py-4 text-gray-700">{customer.email || '-'}</td>
                 <td className="px-6 py-4">
                   <span
-                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                      customer.status === 'Active'
+                    className={`px-2 py-1 rounded-full text-xs font-semibold ${customer.status === 'Active'
                         ? 'bg-green-100 text-green-700'
                         : 'bg-orange-100 text-orange-700'
-                    }`}
+                      }`}
                   >
                     {customer.status || 'Active'}
                   </span>

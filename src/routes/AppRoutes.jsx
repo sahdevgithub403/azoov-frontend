@@ -45,7 +45,7 @@ const AppRoutes = () => {
         <Route path="invoices/create" element={<CreateInvoice />} />
         <Route path="invoices/:id" element={<InvoiceDetails />} />
         <Route path="staff" element={<StaffManagement />} />
-        {/* <Route path="settings" element={<BusinessSettings />} /> */}
+        <Route path="settings" element={<BusinessSettings />} />
       </Route>
     </Routes>
   );

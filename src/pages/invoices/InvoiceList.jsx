@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { getInvoices, updateInvoiceStatus } from "../../api/invoiceApi";
@@ -33,7 +32,6 @@ const InvoiceList = () => {
     fetchInvoices();
   }, [fetchInvoices]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const filterInvoices = useCallback(() => {
     let filtered = [...invoices];
 
@@ -70,6 +68,7 @@ const InvoiceList = () => {
     filterInvoices();
   }, [invoices, searchQuery, dateFilter, statusFilter, filterInvoices]);
 
+  // eslint-disable-next-line no-unused-vars
   const handleStatusChange = async (id, newStatus) => {
     try {
       await updateInvoiceStatus(id, newStatus);

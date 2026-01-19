@@ -33,7 +33,7 @@ const Navbar = () => {
 
           <div className="w-px h-6 bg-gray-100 mx-2"></div>
 
-          <div className="flex items-center gap-3 pl-2">
+          {/* <div className="flex items-center gap-3 pl-2">
             <div className="text-right hidden sm:block">
               <p className="text-xs font-bold text-[#238898]">UPGRADE</p>
               <p className="text-[10px] text-gray-400">Pro Plan</p>
@@ -41,7 +41,7 @@ const Navbar = () => {
             <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xs ring-2 ring-orange-100 ring-offset-2">
               B
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

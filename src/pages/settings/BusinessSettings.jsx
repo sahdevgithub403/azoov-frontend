@@ -102,7 +102,7 @@ const BusinessSettings = () => {
       <form onSubmit={handleSubmit} className="flex flex-col lg:flex-row gap-6">
         
         {/* Left Column: Logo & Tips */}
-        <div className="w-full lg:w-[340px] flex-shrink-0 space-y-6">
+        <div className="w-full lg:w-85 shrink-0 space-y-6">
           
           {/* Shop Logo Card */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">

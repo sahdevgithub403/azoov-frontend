@@ -88,7 +88,7 @@ const BusinessSettings = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 font-sans text-gray-900">
+    <div className="space-y-6">
       
       {/* Page Header */}
       <div className="mb-8">

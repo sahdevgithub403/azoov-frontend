@@ -180,7 +180,9 @@ const Sidebar = () => {
             <Icons.Store />
           </div>
           <div>
-            <h1 className="font-bold text-2xl text-gray-900 leading-tight">azoov</h1>
+            <h1 className="font-bold text-2xl text-gray-900 leading-tight">
+              azoov
+            </h1>
             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
               Business OS
             </p>
@@ -216,29 +218,37 @@ const Sidebar = () => {
         })}
       </nav>
 
-      <div className="p-4 mt-auto">
-        <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-linear-to-tr from-[#238898] to-sky-400 rounded-xl flex items-center justify-center text-white font-bold shadow-md">
-              {user?.fullName?.charAt(0) || "U"}
+      <div className="p-4 mt-auto border-t border-gray-100">
+        <div className="flex items-center justify-between gap-3 group">
+          <div className="flex items-center gap-3 overflow-hidden">
+            {/* Avatar with Ring */}
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#238898] to-cyan-500 p-[2px] shadow-sm">
+              <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-[#238898] font-bold text-sm">
+                {user?.fullName?.charAt(0) || "U"}
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-gray-900 truncate">
-                {user?.fullName || "User"}
-              </p>
-              <p className="text-xs text-gray-400 truncate capitalize">
-                {user?.role?.toLowerCase() || "Administrator"}
-              </p>
+
+            {/* Text Info */}
+            <div className="flex flex-col min-w-0">
+              <span className="text-sm font-bold text-gray-900 truncate">
+                {user?.fullName || "User Name"}
+              </span>
+              <span className="text-[11px] text-gray-400 font-medium uppercase tracking-wide">
+                {user?.role || "Admin"}
+              </span>
             </div>
           </div>
+
+          {/* Icon Only Logout */}
           <button
             onClick={logout}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200"
+            title="Logout"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -250,7 +260,6 @@ const Sidebar = () => {
               <polyline points="16 17 21 12 16 7" />
               <line x1="21" x2="9" y1="12" y2="12" />
             </svg>
-            Logout session
           </button>
         </div>
       </div>

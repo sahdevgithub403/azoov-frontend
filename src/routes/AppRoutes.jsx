@@ -13,6 +13,7 @@ import CreateInvoice from "../pages/invoices/CreateInvoice";
 import { InvoiceDetails } from "../pages/invoices/InvoiceDetails";
 import StaffManagement from "../pages/staff/StaffManagement";
 import BusinessSettings from "../pages/settings/BusinessSettings";
+import { Home } from "../pages/auth/Home";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -22,12 +23,13 @@ const PrivateRoute = ({ children }) => {
         Loading...
       </div>
     );
-  return user ? children : <Navigate to="/login" />;
+  return user ? children : <Navigate to="/home" />;
 };
 
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />

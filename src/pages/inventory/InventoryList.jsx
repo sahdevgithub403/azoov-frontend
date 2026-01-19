@@ -1,22 +1,20 @@
-import { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { getProducts, deleteProduct } from '../../api/productApi';
-import { formatCurrency } from '../../utils/formatCurrency';
-import Loader from '../../components/common/Loader';
-import Button from '../../components/common/Button';
-import Pagination from '../../components/common/Pagination';
+import { useEffect, useState, useCallback } from "react";
+import { Link } from "react-router-dom";
+import { getProducts, deleteProduct } from "../../api/productApi";
+import { formatCurrency } from "../../utils/formatCurrency";
+import Loader from "../../components/common/Loader";
+import Button from "../../components/common/Button";
+import Pagination from "../../components/common/Pagination";
 
 const InventoryList = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('All Categories');
-  const [stockFilter, setStockFilter] = useState('All Stock Status');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("All Categories");
+  const [stockFilter, setStockFilter] = useState("All Stock Status");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
-
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -24,16 +22,15 @@ const InventoryList = () => {
       setProducts(response.data || []);
       setFilteredProducts(response.data || []);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
     }
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
-
 
   const filterProducts = useCallback(() => {
     let filtered = [...products];
@@ -42,48 +39,59 @@ const InventoryList = () => {
       filtered = filtered.filter(
         (p) =>
           p.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.sku?.toLowerCase().includes(searchQuery.toLowerCase())
+          p.sku?.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
-    if (categoryFilter !== 'All Categories') {
+    if (categoryFilter !== "All Categories") {
       filtered = filtered.filter((p) => p.category === categoryFilter);
     }
 
-    if (stockFilter === 'Low Stock') {
-      filtered = filtered.filter((p) => p.isLowStock || p.stockLevel <= (p.lowStockThreshold || 10));
-    } else if (stockFilter === 'In Stock') {
-      filtered = filtered.filter((p) => p.stockLevel > (p.lowStockThreshold || 10));
+    if (stockFilter === "Low Stock") {
+      filtered = filtered.filter(
+        (p) => p.isLowStock || p.stockLevel <= (p.lowStockThreshold || 10),
+      );
+    } else if (stockFilter === "In Stock") {
+      filtered = filtered.filter(
+        (p) => p.stockLevel > (p.lowStockThreshold || 10),
+      );
     }
 
     setFilteredProducts(filtered);
     setCurrentPage(1);
   }, [products, searchQuery, categoryFilter, stockFilter]);
 
-    useEffect(() => {
+  useEffect(() => {
     filterProducts();
   }, [products, searchQuery, categoryFilter, stockFilter, filterProducts]);
 
-
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
+    if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         await deleteProduct(id);
         fetchProducts();
       } catch (error) {
-        console.error('Error deleting product:', error);
+        console.error("Error deleting product:", error);
       }
     }
   };
 
-  const categories = ['All Categories', ...new Set(products.map((p) => p.category).filter(Boolean))];
+  const categories = [
+    "All Categories",
+    ...new Set(products.map((p) => p.category).filter(Boolean)),
+  ];
   const totalProducts = products.length;
-  const lowStockCount = products.filter((p) => p.isLowStock || p.stockLevel <= (p.lowStockThreshold || 10)).length;
-  const totalValue = products.reduce((sum, p) => sum + parseFloat(p.price || 0) * (p.stockLevel || 0), 0);
+  const lowStockCount = products.filter(
+    (p) => p.isLowStock || p.stockLevel <= (p.lowStockThreshold || 10),
+  ).length;
+  const totalValue = products.reduce(
+    (sum, p) => sum + parseFloat(p.price || 0) * (p.stockLevel || 0),
+    0,
+  );
 
   const paginatedProducts = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
@@ -97,22 +105,27 @@ const InventoryList = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Inventory Management</h1>
-        <p className="text-gray-600 mt-1">Track stock levels and manage your product catalog.</p>
-      </div>
-
-      <div className="flex justify-end">
-        <Link to="/inventory/add">
-          <Button className="bg-primary-500 hover:bg-primary-600">
-            <span className="mr-2">+</span>
-            Add Product
-          </Button>
-        </Link>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Inventory Management
+          </h1>
+          <p className="text-gray-600 mt-1">
+            Track stock levels and manage your product catalog.
+          </p>
+        </div>
+        <div className="flex justify-end ">
+          <Link to="/inventory/add">
+            <Button className="bg-primary-500 rounded-b-3xl rounded-t-3xl hover:bg-primary-600 ">
+              <span className="mr-2">+</span>
+              Add Product
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg p-6 shadow-sm">
+        <div className="bg-white rounded-3xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
               <span className="text-2xl">📦</span>
@@ -123,18 +136,20 @@ const InventoryList = () => {
           <p className="text-2xl font-bold text-gray-900">{totalProducts}</p>
         </div>
 
-        <div className="bg-white rounded-lg p-6 shadow-sm">
+        <div className="bg-white rounded-3xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
               <span className="text-2xl">⚠️</span>
             </div>
-            <span className="text-orange-500 text-xs font-semibold">Action Needed</span>
+            <span className="text-orange-500 text-xs font-semibold">
+              Action Needed
+            </span>
           </div>
           <h3 className="text-gray-600 text-sm mb-1">Low Stock Items</h3>
           <p className="text-2xl font-bold text-gray-900">{lowStockCount}</p>
         </div>
 
-        <div className="bg-white rounded-lg p-6 shadow-sm">
+        <div className="bg-white rounded-3xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
               <span className="text-2xl">💰</span>
@@ -142,7 +157,9 @@ const InventoryList = () => {
             <span className="text-green-500 text-sm font-semibold">+8%</span>
           </div>
           <h3 className="text-gray-600 text-sm mb-1">Total Value</h3>
-          <p className="text-2xl font-bold text-gray-900">{formatCurrency(totalValue)}</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {formatCurrency(totalValue)}
+          </p>
         </div>
       </div>
 
@@ -156,7 +173,22 @@ const InventoryList = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2">🔍</span>
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+            </span>
           </div>
           <select
             value={categoryFilter}
@@ -194,8 +226,13 @@ const InventoryList = () => {
             </thead>
             <tbody>
               {paginatedProducts.map((product) => {
-                const isLowStock = product.isLowStock || product.stockLevel <= (product.lowStockThreshold || 10);
-                const stockPercentage = Math.min((product.stockLevel / 100) * 100, 100);
+                const isLowStock =
+                  product.isLowStock ||
+                  product.stockLevel <= (product.lowStockThreshold || 10);
+                const stockPercentage = Math.min(
+                  (product.stockLevel / 100) * 100,
+                  100,
+                );
                 return (
                   <tr key={product.id} className="border-b hover:bg-gray-50">
                     <td className="py-4">
@@ -208,16 +245,21 @@ const InventoryList = () => {
                       </div>
                     </td>
                     <td className="py-4">
-                      <span className="px-2 py-1 bg-gray-100 rounded-full text-sm">{product.category}</span>
+                      <span className="px-2 py-1 bg-gray-100 rounded-full text-sm">
+                        {product.category}
+                      </span>
                     </td>
-                    <td className="py-4 font-semibold">{formatCurrency(product.price || 0)}</td>
+                    <td className="py-4 font-semibold">
+                      {formatCurrency(product.price || 0)}
+                    </td>
                     <td className="py-4">
                       <div className="flex items-center gap-2">
                         <span>{product.stockLevel}</span>
                         <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-24">
                           <div
-                            className={`h-2 rounded-full ${isLowStock ? 'bg-orange-500' : 'bg-green-500'
-                              }`}
+                            className={`h-2 rounded-full ${
+                              isLowStock ? "bg-orange-500" : "bg-green-500"
+                            }`}
                             style={{ width: `${stockPercentage}%` }}
                           ></div>
                         </div>
@@ -225,12 +267,13 @@ const InventoryList = () => {
                     </td>
                     <td className="py-4">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold ${isLowStock
-                          ? 'bg-orange-100 text-orange-600'
-                          : 'bg-green-100 text-green-600'
-                          }`}
+                        className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                          isLowStock
+                            ? "bg-orange-100 text-orange-600"
+                            : "bg-green-100 text-green-600"
+                        }`}
                       >
-                        {isLowStock ? 'Low Stock' : 'In Stock'}
+                        {isLowStock ? "Low Stock" : "In Stock"}
                       </span>
                     </td>
                     <td className="py-4">
@@ -263,9 +306,9 @@ const InventoryList = () => {
         {totalPages > 1 && (
           <div className="mt-4">
             <p className="text-sm text-gray-600 mb-2">
-              Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-              {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of {filteredProducts.length}{' '}
-              results
+              Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
+              {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of{" "}
+              {filteredProducts.length} results
             </p>
             <Pagination
               currentPage={currentPage}
@@ -280,4 +323,3 @@ const InventoryList = () => {
 };
 
 export default InventoryList;
-

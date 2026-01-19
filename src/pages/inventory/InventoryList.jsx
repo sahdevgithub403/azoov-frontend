@@ -16,13 +16,7 @@ const InventoryList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
 
-  useEffect(() => {
-    filterProducts();
-  }, [products, searchQuery, categoryFilter, stockFilter, filterProducts]);
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -35,6 +29,11 @@ const InventoryList = () => {
       setLoading(false);
     }
   }, []);
+
+    useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
 
   const filterProducts = useCallback(() => {
     let filtered = [...products];
@@ -60,6 +59,11 @@ const InventoryList = () => {
     setFilteredProducts(filtered);
     setCurrentPage(1);
   }, [products, searchQuery, categoryFilter, stockFilter]);
+
+    useEffect(() => {
+    filterProducts();
+  }, [products, searchQuery, categoryFilter, stockFilter, filterProducts]);
+
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {

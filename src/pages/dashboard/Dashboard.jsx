@@ -163,14 +163,14 @@ export const Dashboard = () => {
         </div>
         <div className="flex items-center gap-3">
             {/* Filter mimicking the dropdowns in the image */}
-            <div className="hidden md:flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-600 shadow-sm cursor-pointer hover:border-gray-300">
+            <div className="hidden md:flex items-center gap-2 rounded-3xl bg-white border border-gray-200 px-4 py-2 text-sm text-gray-600 shadow-sm cursor-pointer hover:border-gray-300">
                 <span>📅 This Month</span>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4L6 8L10 4"/></svg>
             </div>
 
             <Link
                 to="/invoices/create"
-                className="bg-[#2C9DA6] hover:bg-[#238a92] text-white px-5 py-2.5 rounded-xl font-medium shadow-lg shadow-[#2C9DA6]/20 flex items-center gap-2 transition-all active:scale-95"
+                className="bg-[#2C9DA6] hover:bg-[#238a92] rounded-3xl text-white px-5 py-2.5 font-medium shadow-lg shadow-[#2C9DA6]/20 flex items-center gap-2 transition-all active:scale-95"
             >
                 <Icons.Plus />
                 <span>New Sale</span>

@@ -68,7 +68,7 @@ const Login = () => {
       <div className="absolute inset-0 pointer-events-none" style={gridStyle}></div>
 
       {/* Main Container */}
-      <div className="w-full max-w-[420px] z-10 flex flex-col items-center">
+      <div className="w-full max-w-105 z-10 flex flex-col items-center">
 
         {/* Header Logo */}
         <div className="mb-6 flex flex-col items-center">

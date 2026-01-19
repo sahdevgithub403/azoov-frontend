@@ -1,39 +1,33 @@
-import { useEffect, useState, useCallback } from 'react';
-import { getCustomers, createCustomer, updateCustomer, deleteCustomer, searchCustomers } from '../../api/customerApi';
-import Loader from '../../components/common/Loader';
-import Button from '../../components/common/Button';
-import Modal from '../../components/common/Modal';
-import Input from '../../components/common/Input';
-import Pagination from '../../components/common/Pagination';
+import { useEffect, useState, useCallback } from "react";
+import {
+  getCustomers,
+  createCustomer,
+  updateCustomer,
+  deleteCustomer,
+  searchCustomers,
+} from "../../api/customerApi";
+import Loader from "../../components/common/Loader";
+import Button from "../../components/common/Button";
+import Modal from "../../components/common/Modal";
+import Input from "../../components/common/Input";
+import Pagination from "../../components/common/Pagination";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
   const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    status: 'Active',
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    status: "Active",
   });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
-  useEffect(() => {
-    fetchCustomers();
-  }, [fetchCustomers]);
-
-  useEffect(() => {
-    if (searchQuery) {
-      handleSearch();
-    } else {
-      setFilteredCustomers(customers);
-    }
-  }, [searchQuery, customers, handleSearch]);
 
   const fetchCustomers = useCallback(async () => {
     try {
@@ -41,11 +35,15 @@ const Customers = () => {
       setCustomers(response.data || []);
       setFilteredCustomers(response.data || []);
     } catch (error) {
-      console.error('Error fetching customers:', error);
+      console.error("Error fetching customers:", error);
     } finally {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    fetchCustomers();
+  }, [fetchCustomers]);
 
   const handleSearch = useCallback(async () => {
     if (!searchQuery.trim()) {
@@ -56,28 +54,36 @@ const Customers = () => {
       const response = await searchCustomers(searchQuery);
       setFilteredCustomers(response.data || []);
     } catch (error) {
-      console.error('Error searching customers:', error);
+      console.error("Error searching customers:", error);
     }
   }, [searchQuery, customers]);
+
+  useEffect(() => {
+    if (searchQuery) {
+      handleSearch();
+    } else {
+      setFilteredCustomers(customers);
+    }
+  }, [searchQuery, customers, handleSearch]);
 
   const handleOpenModal = (customer = null) => {
     if (customer) {
       setEditingCustomer(customer);
       setFormData({
-        name: customer.name || '',
-        email: customer.email || '',
-        phone: customer.phone || '',
-        address: customer.address || '',
-        status: customer.status || 'Active',
+        name: customer.name || "",
+        email: customer.email || "",
+        phone: customer.phone || "",
+        address: customer.address || "",
+        status: customer.status || "Active",
       });
     } else {
       setEditingCustomer(null);
       setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        address: '',
-        status: 'Active',
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        status: "Active",
       });
     }
     setIsModalOpen(true);
@@ -94,17 +100,17 @@ const Customers = () => {
       setIsModalOpen(false);
       fetchCustomers();
     } catch (error) {
-      console.error('Error saving customer:', error);
+      console.error("Error saving customer:", error);
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this customer?')) {
+    if (window.confirm("Are you sure you want to delete this customer?")) {
       try {
         await deleteCustomer(id);
         fetchCustomers();
       } catch (error) {
-        console.error('Error deleting customer:', error);
+        console.error("Error deleting customer:", error);
       }
     }
   };
@@ -113,13 +119,18 @@ const Customers = () => {
   const newThisMonth = customers.filter((c) => {
     const created = new Date(c.createdAt);
     const now = new Date();
-    return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
+    return (
+      created.getMonth() === now.getMonth() &&
+      created.getFullYear() === now.getFullYear()
+    );
   }).length;
-  const incompleteProfiles = customers.filter((c) => !c.email || !c.phone).length;
+  const incompleteProfiles = customers.filter(
+    (c) => !c.email || !c.phone,
+  ).length;
 
   const paginatedCustomers = filteredCustomers.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
   const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
 
@@ -135,7 +146,9 @@ const Customers = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Customers</h1>
-        <p className="text-gray-600 mt-1">Manage relationships and track client history.</p>
+        <p className="text-gray-600 mt-1">
+          Manage relationships and track client history.
+        </p>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
@@ -147,10 +160,15 @@ const Customers = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
-          <span className="absolute left-3 top-1/2 transform -translate-y-1/2">🔍</span>
+          <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+            🔍
+          </span>
         </div>
         <Button variant="secondary">Filter</Button>
-        <Button onClick={() => handleOpenModal()} className="bg-primary-500 hover:bg-primary-600">
+        <Button
+          onClick={() => handleOpenModal()}
+          className="bg-primary-500 hover:bg-primary-600"
+        >
           + Add Customer
         </Button>
       </div>
@@ -183,7 +201,9 @@ const Customers = () => {
             </div>
           </div>
           <h3 className="text-gray-600 text-sm mb-1">Incomplete Profiles</h3>
-          <p className="text-3xl font-bold text-gray-900">{incompleteProfiles}</p>
+          <p className="text-3xl font-bold text-gray-900">
+            {incompleteProfiles}
+          </p>
         </div>
       </div>
 
@@ -194,11 +214,21 @@ const Customers = () => {
               <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
                 <input type="checkbox" />
               </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">CUSTOMER</th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">PHONE</th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">EMAIL</th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">STATUS</th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">ACTIONS</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                CUSTOMER
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                PHONE
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                EMAIL
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                STATUS
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                ACTIONS
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -210,26 +240,34 @@ const Customers = () => {
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-                      {customer.name?.charAt(0) || 'C'}
+                      {customer.name?.charAt(0) || "C"}
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{customer.name}</p>
+                      <p className="font-medium text-gray-900">
+                        {customer.name}
+                      </p>
                       <p className="text-sm text-gray-500">
-                        Added {new Date(customer.createdAt).toLocaleDateString()}
+                        Added{" "}
+                        {new Date(customer.createdAt).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 text-gray-700">{customer.phone || '-'}</td>
-                <td className="px-6 py-4 text-gray-700">{customer.email || '-'}</td>
+                <td className="px-6 py-4 text-gray-700">
+                  {customer.phone || "-"}
+                </td>
+                <td className="px-6 py-4 text-gray-700">
+                  {customer.email || "-"}
+                </td>
                 <td className="px-6 py-4">
                   <span
-                    className={`px-2 py-1 rounded-full text-xs font-semibold ${customer.status === 'Active'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-orange-100 text-orange-700'
-                      }`}
+                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      customer.status === "Active"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-orange-100 text-orange-700"
+                    }`}
                   >
-                    {customer.status || 'Active'}
+                    {customer.status || "Active"}
                   </span>
                 </td>
                 <td className="px-6 py-4">
@@ -260,8 +298,9 @@ const Customers = () => {
         {totalPages > 1 && (
           <div className="px-6 py-4 border-t">
             <p className="text-sm text-gray-600 mb-2">
-              Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredCustomers.length)} of{' '}
-              {filteredCustomers.length} customers
+              Showing {(currentPage - 1) * itemsPerPage + 1}-
+              {Math.min(currentPage * itemsPerPage, filteredCustomers.length)}{" "}
+              of {filteredCustomers.length} customers
             </p>
             <Pagination
               currentPage={currentPage}
@@ -275,7 +314,7 @@ const Customers = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingCustomer ? 'Edit Customer' : 'Add New Customer'}
+        title={editingCustomer ? "Edit Customer" : "Add New Customer"}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
@@ -288,23 +327,33 @@ const Customers = () => {
             label="Email"
             type="email"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
           />
           <Input
             label="Phone"
             value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, phone: e.target.value })
+            }
           />
           <Input
             label="Address"
             value={formData.address}
-            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, address: e.target.value })
+            }
           />
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Status
+            </label>
             <select
               value={formData.status}
-              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, status: e.target.value })
+              }
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
               <option value="Active">Active</option>
@@ -321,7 +370,7 @@ const Customers = () => {
               Cancel
             </Button>
             <Button type="submit" className="flex-1">
-              {editingCustomer ? 'Update' : 'Create'}
+              {editingCustomer ? "Update" : "Create"}
             </Button>
           </div>
         </form>
@@ -331,4 +380,3 @@ const Customers = () => {
 };
 
 export default Customers;
-

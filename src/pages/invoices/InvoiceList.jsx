@@ -1,29 +1,21 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { getInvoices, updateInvoiceStatus } from '../../api/invoiceApi';
-import { formatCurrency } from '../../utils/formatCurrency';
-import Loader from '../../components/common/Loader';
-import Button from '../../components/common/Button';
-import Pagination from '../../components/common/Pagination';
+import { useEffect, useState, useCallback } from "react";
+import { Link } from "react-router-dom";
+import { getInvoices, updateInvoiceStatus } from "../../api/invoiceApi";
+import { formatCurrency } from "../../utils/formatCurrency";
+import Loader from "../../components/common/Loader";
+import Button from "../../components/common/Button";
+import Pagination from "../../components/common/Pagination";
 
 const InvoiceList = () => {
   const [invoices, setInvoices] = useState([]);
   const [filteredInvoices, setFilteredInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [dateFilter, setDateFilter] = useState('This Month');
-  const [statusFilter, setStatusFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dateFilter, setDateFilter] = useState("This Month");
+  const [statusFilter, setStatusFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
-  useEffect(() => {
-    fetchInvoices();
-  }, [fetchInvoices]);
-
-  useEffect(() => {
-    filterInvoices();
-  }, [invoices, searchQuery, dateFilter, statusFilter, filterInvoices]);
 
   const fetchInvoices = useCallback(async () => {
     try {
@@ -31,11 +23,15 @@ const InvoiceList = () => {
       setInvoices(response.data || []);
       setFilteredInvoices(response.data || []);
     } catch (error) {
-      console.error('Error fetching invoices:', error);
+      console.error("Error fetching invoices:", error);
     } finally {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    fetchInvoices();
+  }, [fetchInvoices]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const filterInvoices = useCallback(() => {
@@ -44,20 +40,25 @@ const InvoiceList = () => {
     if (searchQuery) {
       filtered = filtered.filter(
         (inv) =>
-          inv.invoiceNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          inv.customer?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+          inv.invoiceNumber
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          inv.customer?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
-    if (statusFilter !== 'All') {
+    if (statusFilter !== "All") {
       filtered = filtered.filter((inv) => inv.status === statusFilter);
     }
 
-    if (dateFilter === 'This Month') {
+    if (dateFilter === "This Month") {
       const now = new Date();
       filtered = filtered.filter((inv) => {
         const invDate = new Date(inv.issuedDate);
-        return invDate.getMonth() === now.getMonth() && invDate.getFullYear() === now.getFullYear();
+        return (
+          invDate.getMonth() === now.getMonth() &&
+          invDate.getFullYear() === now.getFullYear()
+        );
       });
     }
 
@@ -65,25 +66,29 @@ const InvoiceList = () => {
     setCurrentPage(1);
   }, [invoices, searchQuery, dateFilter, statusFilter]);
 
+  useEffect(() => {
+    filterInvoices();
+  }, [invoices, searchQuery, dateFilter, statusFilter, filterInvoices]);
+
   const handleStatusChange = async (id, newStatus) => {
     try {
       await updateInvoiceStatus(id, newStatus);
       fetchInvoices();
     } catch (error) {
-      console.error('Error updating invoice status:', error);
+      console.error("Error updating invoice status:", error);
     }
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Paid':
-        return 'bg-green-100 text-green-700';
-      case 'Pending':
-        return 'bg-yellow-100 text-yellow-700';
-      case 'Overdue':
-        return 'bg-red-100 text-red-700';
+      case "Paid":
+        return "bg-green-100 text-green-700";
+      case "Pending":
+        return "bg-yellow-100 text-yellow-700";
+      case "Overdue":
+        return "bg-red-100 text-red-700";
       default:
-        return 'bg-gray-100 text-gray-700';
+        return "bg-gray-100 text-gray-700";
     }
   };
 
@@ -91,18 +96,18 @@ const InvoiceList = () => {
     .filter((inv) => {
       const now = new Date();
       const invDate = new Date(inv.issuedDate);
-      return invDate.getMonth() === now.getMonth() && inv.status === 'Paid';
+      return invDate.getMonth() === now.getMonth() && inv.status === "Paid";
     })
     .reduce((sum, inv) => sum + parseFloat(inv.total || 0), 0);
 
   const invoicesIssued = filteredInvoices.length;
   const pendingPayment = invoices
-    .filter((inv) => inv.status === 'Pending')
+    .filter((inv) => inv.status === "Pending")
     .reduce((sum, inv) => sum + parseFloat(inv.total || 0), 0);
 
   const paginatedInvoices = filteredInvoices.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
   const totalPages = Math.ceil(filteredInvoices.length / itemsPerPage);
 
@@ -119,12 +124,16 @@ const InvoiceList = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Invoice History</h1>
-          <p className="text-gray-600 mt-1">Manage, view, and track all your shop's transactions.</p>
+          <p className="text-gray-600 mt-1">
+            Manage, view, and track all your shop's transactions.
+          </p>
         </div>
         <div className="flex gap-3">
           <Button variant="secondary">Export CSV</Button>
           <Link to="/invoices/create">
-            <Button className="bg-primary-500 hover:bg-primary-600">+ New Invoice</Button>
+            <Button className="bg-primary-500 hover:bg-primary-600">
+              + New Invoice
+            </Button>
           </Link>
         </div>
       </div>
@@ -141,7 +150,9 @@ const InvoiceList = () => {
             </span>
           </div>
           <h3 className="text-gray-600 text-sm mb-1">Total Revenue (Oct)</h3>
-          <p className="text-2xl font-bold text-gray-900">{formatCurrency(totalRevenue)}</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {formatCurrency(totalRevenue)}
+          </p>
         </div>
 
         <div className="bg-white rounded-lg p-6 shadow-sm">
@@ -166,7 +177,9 @@ const InvoiceList = () => {
             <span className="text-gray-500 text-sm">0%</span>
           </div>
           <h3 className="text-gray-600 text-sm mb-1">Pending Payment</h3>
-          <p className="text-2xl font-bold text-gray-900">{formatCurrency(pendingPayment)}</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {formatCurrency(pendingPayment)}
+          </p>
         </div>
       </div>
 
@@ -180,7 +193,9 @@ const InvoiceList = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2">🔍</span>
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+              🔍
+            </span>
           </div>
           <select
             value={dateFilter}
@@ -203,11 +218,14 @@ const InvoiceList = () => {
             <option>Overdue</option>
             <option>Draft</option>
           </select>
-          <Button variant="secondary" onClick={() => {
-            setSearchQuery('');
-            setDateFilter('This Month');
-            setStatusFilter('All');
-          }}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setSearchQuery("");
+              setDateFilter("This Month");
+              setStatusFilter("All");
+            }}
+          >
             Clear All
           </Button>
         </div>
@@ -231,16 +249,18 @@ const InvoiceList = () => {
                   <td className="py-4">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-xs">
-                        {invoice.customer?.name?.charAt(0) || 'C'}
+                        {invoice.customer?.name?.charAt(0) || "C"}
                       </div>
-                      <span>{invoice.customer?.name || 'Unknown'}</span>
+                      <span>{invoice.customer?.name || "Unknown"}</span>
                     </div>
                   </td>
                   <td className="py-4 text-gray-600">
                     {new Date(invoice.issuedDate).toLocaleDateString()}
                   </td>
                   <td className="py-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(invoice.status)}`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(invoice.status)}`}
+                    >
                       • {invoice.status}
                     </span>
                   </td>
@@ -268,9 +288,9 @@ const InvoiceList = () => {
         {totalPages > 1 && (
           <div className="mt-4">
             <p className="text-sm text-gray-600 mb-2">
-              Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-              {Math.min(currentPage * itemsPerPage, filteredInvoices.length)} of {filteredInvoices.length}{' '}
-              invoices
+              Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
+              {Math.min(currentPage * itemsPerPage, filteredInvoices.length)} of{" "}
+              {filteredInvoices.length} invoices
             </p>
             <Pagination
               currentPage={currentPage}
@@ -285,4 +305,3 @@ const InvoiceList = () => {
 };
 
 export default InvoiceList;
-

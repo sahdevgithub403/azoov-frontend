@@ -9,30 +9,43 @@ export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
   const [client, setClient] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     const stompClient = new Client({
       webSocketFactory: () => new SockJS("http://localhost:8081/ws"),
       reconnectDelay: 5000,
+      debug: (str) => {
+        console.log('STOMP: ' + str);
+      },
 
       onConnect: () => {
         console.log("✅ WebSocket Connected");
+        setIsConnected(true);
+      },
+
+      onDisconnect: () => {
+        console.log("❌ WebSocket Disconnected");
+        setIsConnected(false);
       },
 
       onStompError: (frame) => {
         console.error("❌ STOMP Error", frame);
+        setIsConnected(false);
       },
     });
 
     stompClient.activate();
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setClient(stompClient);
 
-    return () => stompClient.deactivate();
+    return () => {
+      stompClient.deactivate();
+      setIsConnected(false);
+    };
   }, []);
 
   return (
-    <SocketContext.Provider value={client}>
+    <SocketContext.Provider value={{ client, isConnected }}>
       {children}
     </SocketContext.Provider>
   );

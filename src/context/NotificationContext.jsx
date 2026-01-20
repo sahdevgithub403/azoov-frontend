@@ -1,6 +1,5 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { useSocket } from './SocketContext';
-import { useEffect } from 'react';
 
 const NotificationContext = createContext(null);
 
@@ -8,19 +7,7 @@ export const useNotifications = () => useContext(NotificationContext);
 
 export const NotificationProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
-    const socket = useSocket();
-
-    // Subscribe to WebSocket notifications
-    useEffect(() => {
-        if (!socket) return;
-
-        const subscription = socket.subscribe('/topic/notifications', (message) => {
-            const notification = JSON.parse(message.body);
-            addNotification(notification.type, notification.title, notification.message);
-        });
-
-        return () => subscription.unsubscribe();
-    }, [socket]);
+    const { client, isConnected } = useSocket() || {};
 
     const addNotification = useCallback((type, title, message) => {
         const id = Date.now();
@@ -37,6 +24,37 @@ export const NotificationProvider = ({ children }) => {
     const removeNotification = useCallback((id) => {
         setNotifications((prev) => prev.filter((n) => n.id !== id));
     }, []);
+
+    // Subscribe to WebSocket notifications
+    useEffect(() => {
+        if (!client || !isConnected) {
+            console.log('⏳ Waiting for WebSocket connection...');
+            return;
+        }
+
+        console.log('✅ Subscribing to notifications...');
+
+        try {
+            const subscription = client.subscribe('/topic/notifications', (message) => {
+                try {
+                    const notification = JSON.parse(message.body);
+                    console.log('📬 Received notification:', notification);
+                    addNotification(notification.type, notification.title, notification.message);
+                } catch (error) {
+                    console.error('Error parsing notification:', error);
+                }
+            });
+
+            console.log('✅ Successfully subscribed to notifications');
+
+            return () => {
+                console.log('🔌 Unsubscribing from notifications');
+                subscription.unsubscribe();
+            };
+        } catch (error) {
+            console.error('Error subscribing to notifications:', error);
+        }
+    }, [client, isConnected, addNotification]);
 
     const showSuccess = useCallback((title, message) => {
         addNotification('success', title, message);

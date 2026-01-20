@@ -3,7 +3,6 @@ import { useAuth } from "../context/AuthContext";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ForgotPassword from "../pages/auth/ForgotPassword";
-import ResetPassword from "../pages/auth/ResetPassword";
 import OAuth2RedirectHandler from "../pages/auth/OAuth2RedirectHandler";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import { Dashboard } from "../pages/dashboard/Dashboard";
@@ -46,7 +45,6 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
       <Route
         path="/"

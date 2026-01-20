@@ -1,35 +1,54 @@
-import { useEffect } from "react";
-import { useSocket } from "./SocketContext";
+/* eslint-disable react-hooks/refs */
+import { createContext, useContext, useEffect, useRef } from "react";
+import { Client } from "@stomp/stompjs";
 
-export const Notifications = () => {
-  const stompClient = useSocket();
+const NotificationContext = createContext(null);
+
+export const NotificationProvider = ({ children }) => {
+  const clientRef = useRef(null);
+  const subscriptionRef = useRef(null);
 
   useEffect(() => {
-    if (!stompClient) return;
+    const client = new Client({
+      brokerURL: "ws://localhost:8080/ws",
 
-    const subscription = stompClient.subscribe(
-      "/topic/notifications",
-      (msg) => {
-        console.log("📩 Notification:", msg.body);
-      }
-    );
+      reconnectDelay: 5000,
 
-    return () => subscription.unsubscribe();
-  }, [stompClient]);
+      onConnect: () => {
+        console.log("✅ STOMP Connected");
 
-  const sendMessage = () => {
-    stompClient.publish({
-      destination: "/app/notifications",
-      body: "Hello from React 🚀",
+        subscriptionRef.current = client.subscribe(
+          "/topic/notifications",
+          (msg) => {
+            console.log("📩 Notification:", msg.body);
+          }
+        );
+      },
+
+      onDisconnect: () => {
+        console.log("❌ STOMP Disconnected");
+      },
+
+      onStompError: (frame) => {
+        console.error("STOMP error", frame);
+      },
     });
-  };
+
+    client.activate();
+    clientRef.current = client;
+
+    return () => {
+      subscriptionRef.current?.unsubscribe();
+      client.deactivate();
+    };
+  }, []);
 
   return (
-    <div>
-      <h1>WebSocket Test</h1>
-      <button onClick={sendMessage}>Send Notification</button>
-    </div>
+    <NotificationContext.Provider value={clientRef.current}>
+      {children}
+    </NotificationContext.Provider>
   );
-}
+};
 
-export default Notification;
+// eslint-disable-next-line react-refresh/only-export-components
+export const useNotifications = () => useContext(NotificationContext);

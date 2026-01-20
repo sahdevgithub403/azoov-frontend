@@ -250,9 +250,10 @@ export const Dashboard = () => {
     return `${days}d ago`;
   };
 
-  if (loading) {
+if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#F7F9FB]">
+     
+      <div className="flex items-center justify-center min-h-[80vh] bg-[#F7F9FB]">
         <Loader />
       </div>
     );

@@ -55,23 +55,23 @@ export const StaffManagement = () => {
   const totalStaff = staff.length;
   const activeStaff = staff.filter((s) => s.user?.active).length;
   const admins = staff.filter(
-    (s) => s.user?.role === "ADMIN" || s.user?.role === "MANAGER"
+    (s) => s.user?.role === "ADMIN" || s.user?.role === "MANAGER",
   ).length;
 
   const paginatedStaff = filteredStaff.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
   const totalPages = Math.ceil(filteredStaff.length / itemsPerPage);
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div className="flex items-center justify-center h-screen bg-[#F7F9FB]">
         <Loader />
       </div>
     );
   }
-
+  
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -183,7 +183,7 @@ export const StaffManagement = () => {
                     <td className="py-4">
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-semibold ${getRoleColor(
-                          user.role || s.position
+                          user.role || s.position,
                         )}`}
                       >
                         {s.position || user.role || "Staff"}

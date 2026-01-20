@@ -32,6 +32,7 @@ const Sidebar = () => {
     {
       path: "/",
       label: "Dashboard",
+      allowedRoles: ["ADMIN", "MANAGER", "SALES"], // All roles can view dashboard
       icon: (props) => (
         <svg
           {...props}
@@ -55,6 +56,7 @@ const Sidebar = () => {
     {
       path: "/inventory",
       label: "Inventory",
+      allowedRoles: ["ADMIN", "MANAGER"], // ADMIN can add/edit/delete, MANAGER can update/adjust stock
       icon: (props) => (
         <svg
           {...props}
@@ -78,6 +80,7 @@ const Sidebar = () => {
     {
       path: "/invoices",
       label: "Invoices",
+      allowedRoles: ["ADMIN", "MANAGER", "SALES"], // All roles can create invoices, ADMIN can edit/delete
       icon: (props) => (
         <svg
           {...props}
@@ -102,6 +105,7 @@ const Sidebar = () => {
     {
       path: "/customers",
       label: "Customers",
+      allowedRoles: ["ADMIN", "MANAGER", "SALES"], // All roles can manage customers
       icon: (props) => (
         <svg
           {...props}
@@ -125,6 +129,7 @@ const Sidebar = () => {
     {
       path: "/staff",
       label: "Staff Management",
+      allowedRoles: ["ADMIN"], // Only ADMIN can manage staff
       icon: (props) => (
         <svg
           {...props}
@@ -147,6 +152,7 @@ const Sidebar = () => {
     {
       path: "/settings",
       label: "Settings",
+      allowedRoles: ["ADMIN"], // Only ADMIN can access settings
       icon: (props) => (
         <svg
           {...props}
@@ -162,6 +168,51 @@ const Sidebar = () => {
         >
           <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
           <circle cx="12" cy="12" r="3" />
+        </svg>
+      ),
+    },
+    {
+      path: "/admin",
+      label: "Admin Panel",
+      allowedRoles: ["ADMIN"], // Only ADMIN can access admin panel
+      icon: (props) => (
+        <svg
+          {...props}
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+        </svg>
+      ),
+    },
+    {
+      path: "/admin/users",
+      label: "Users",
+      allowedRoles: ["ADMIN"], // Only ADMIN can manage users
+      icon: (props) => (
+        <svg
+          {...props}
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
         </svg>
       ),
     },
@@ -194,17 +245,16 @@ const Sidebar = () => {
         <p className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">
           Main Dashboard
         </p>
-        {menuItems.map((item) => {
+        {menuItems.filter(item => item.allowedRoles.includes(user?.role)).map((item) => {
           const active = isActive(item.path);
           return (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-                active
-                  ? "bg-[#238898]/10 text-[#238898] font-semibold"
-                  : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-              }`}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${active
+                ? "bg-[#238898]/10 text-[#238898] font-semibold"
+                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                }`}
             >
               <item.icon
                 className={`${active ? "text-[#238898]" : "text-gray-400 group-hover:text-gray-900"} transition-colors`}

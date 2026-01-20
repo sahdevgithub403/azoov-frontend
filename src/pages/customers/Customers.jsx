@@ -136,7 +136,7 @@ const Customers = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div className="flex items-center justify-center min-h-[80vh] bg-[#F7F9FB]">
         <Loader />
       </div>
     );

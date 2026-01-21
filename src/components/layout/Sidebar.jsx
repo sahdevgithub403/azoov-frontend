@@ -15,7 +15,7 @@ const Sidebar = () => {
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="2.5" // Increased stroke weight for boldness
         strokeLinecap="round"
         strokeLinejoin="round"
       >
@@ -32,7 +32,7 @@ const Sidebar = () => {
     {
       path: "/",
       label: "Dashboard",
-      allowedRoles: ["ADMIN", "MANAGER", "SALES"], // All roles can view dashboard
+      allowedRoles: ["ADMIN", "MANAGER", "SALES"],
       icon: (props) => (
         <svg
           {...props}
@@ -42,7 +42,7 @@ const Sidebar = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -56,7 +56,7 @@ const Sidebar = () => {
     {
       path: "/inventory",
       label: "Inventory",
-      allowedRoles: ["ADMIN", "MANAGER"], // ADMIN can add/edit/delete, MANAGER can update/adjust stock
+      allowedRoles: ["ADMIN", "MANAGER"],
       icon: (props) => (
         <svg
           {...props}
@@ -66,7 +66,7 @@ const Sidebar = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -80,7 +80,7 @@ const Sidebar = () => {
     {
       path: "/invoices",
       label: "Invoices",
-      allowedRoles: ["ADMIN", "MANAGER", "SALES"], // All roles can create invoices, ADMIN can edit/delete
+      allowedRoles: ["ADMIN", "MANAGER", "SALES"],
       icon: (props) => (
         <svg
           {...props}
@@ -90,7 +90,7 @@ const Sidebar = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -105,7 +105,7 @@ const Sidebar = () => {
     {
       path: "/customers",
       label: "Customers",
-      allowedRoles: ["ADMIN", "MANAGER", "SALES"], // All roles can manage customers
+      allowedRoles: ["ADMIN", "MANAGER", "SALES"],
       icon: (props) => (
         <svg
           {...props}
@@ -115,7 +115,7 @@ const Sidebar = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -129,7 +129,7 @@ const Sidebar = () => {
     {
       path: "/staff",
       label: "Staff Management",
-      allowedRoles: ["ADMIN"], // Only ADMIN can manage staff
+      allowedRoles: ["ADMIN"],
       icon: (props) => (
         <svg
           {...props}
@@ -139,7 +139,7 @@ const Sidebar = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -152,7 +152,7 @@ const Sidebar = () => {
     {
       path: "/settings",
       label: "Settings",
-      allowedRoles: ["ADMIN"], // Only ADMIN can access settings
+      allowedRoles: ["ADMIN"],
       icon: (props) => (
         <svg
           {...props}
@@ -162,7 +162,7 @@ const Sidebar = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -174,7 +174,7 @@ const Sidebar = () => {
     {
       path: "/admin",
       label: "Admin Panel",
-      allowedRoles: ["ADMIN"], // Only ADMIN can access admin panel
+      allowedRoles: ["ADMIN"],
       icon: (props) => (
         <svg
           {...props}
@@ -184,7 +184,7 @@ const Sidebar = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -195,7 +195,7 @@ const Sidebar = () => {
     {
       path: "/admin/users",
       label: "Users",
-      allowedRoles: ["ADMIN"], // Only ADMIN can manage users
+      allowedRoles: ["ADMIN"],
       icon: (props) => (
         <svg
           {...props}
@@ -205,7 +205,7 @@ const Sidebar = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -224,56 +224,68 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-72 bg-white border-r border-gray-100 flex flex-col h-screen sticky top-0">
+    // Changed border-r-gray-100 -> border-r-2 border-gray-900 (Bold Divider)
+    <aside className="w-72 bg-white border-r-2 border-gray-900 flex flex-col h-screen sticky top-0 z-20">
       <div className="p-8">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#238898] rounded-2xl flex items-center justify-center text-white shadow-lg shadow-[#238898]/30">
+          {/* Logo Container: Switched Teal to Blue, Added Border & Hard Shadow */}
+          <div className="w-12 h-12 bg-[#5B8DEF] rounded-xl flex items-center justify-center text-white border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <Icons.Store />
           </div>
           <div>
-            <h1 className="font-bold text-2xl text-gray-900 leading-tight">
+            <h1 className="font-extrabold text-2xl text-gray-900 leading-tight tracking-tight">
               azoov
             </h1>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
               Business OS
             </p>
           </div>
         </div>
       </div>
 
-      <nav className="flex-1 px-4 space-y-1">
-        <p className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">
+      <nav className="flex-1 px-4 space-y-2">
+        <p className="px-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest mb-4">
           Main Dashboard
         </p>
-        {menuItems.filter(item => item.allowedRoles.includes(user?.role)).map((item) => {
-          const active = isActive(item.path);
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${active
-                ? "bg-[#238898]/10 text-[#238898] font-semibold"
-                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+        {menuItems
+          .filter((item) => item.allowedRoles.includes(user?.role))
+          .map((item) => {
+            const active = isActive(item.path);
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                // Updated Active State: Neo-Brutalist Border + Blue Background
+                // Updated Inactive State: Transparent Border
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group border-2 ${
+                  active
+                    ? "bg-[#5B8DEF]/10 border-gray-900 text-[#5B8DEF] font-bold shadow-sm"
+                    : "border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-900 hover:border-gray-200"
                 }`}
-            >
-              <item.icon
-                className={`${active ? "text-[#238898]" : "text-gray-400 group-hover:text-gray-900"} transition-colors`}
-              />
-              <span className="text-sm">{item.label}</span>
-              {active && (
-                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#238898]" />
-              )}
-            </Link>
-          );
-        })}
+              >
+                <item.icon
+                  className={`${
+                    active
+                      ? "text-[#5B8DEF]"
+                      : "text-gray-400 group-hover:text-gray-900"
+                  } transition-colors`}
+                />
+                <span className="text-sm">{item.label}</span>
+                {active && (
+                  <div className="ml-auto w-2 h-2 rounded-full bg-[#5B8DEF]" />
+                )}
+              </Link>
+            );
+          })}
       </nav>
 
-      <div className="p-4 mt-auto border-t border-gray-100">
+      {/* User Section: Bold Top Border */}
+      <div className="p-4 mt-auto border-t-2 border-gray-900">
         <div className="flex items-center justify-between gap-3 group">
           <div className="flex items-center gap-3 overflow-hidden">
-            {/* Avatar with Ring */}
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#238898] to-cyan-500 p-[2px] shadow-sm">
-              <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-[#238898] font-bold text-sm">
+            {/* Avatar with Bold Border & Blue Gradient */}
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DEF] to-blue-400 p-[2px] border-2 border-gray-900">
+              <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-[#5B8DEF] font-bold text-sm">
                 {user?.fullName?.charAt(0) || "U"}
               </div>
             </div>
@@ -283,16 +295,16 @@ const Sidebar = () => {
               <span className="text-sm font-bold text-gray-900 truncate">
                 {user?.fullName || "User Name"}
               </span>
-              <span className="text-[11px] text-gray-400 font-medium uppercase tracking-wide">
+              <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wide">
                 {user?.role || "Admin"}
               </span>
             </div>
           </div>
 
-          {/* Icon Only Logout */}
+          {/* Logout Button */}
           <button
             onClick={logout}
-            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200"
+            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 border-2 border-transparent hover:border-red-100"
             title="Logout"
           >
             <svg
@@ -302,7 +314,7 @@ const Sidebar = () => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             >

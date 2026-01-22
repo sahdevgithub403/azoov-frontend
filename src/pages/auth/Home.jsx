@@ -45,13 +45,13 @@ export const Home = () => {
 
           {/* Links as Boxes */}
           <div className="hidden md:flex">
-             <a href="#" className="flex items-center px-6 py-3 border-y-2 border-r-2 border-black bg-white hover:bg-[#f55bf9] transition font-bold text-sm uppercase tracking-wide">
+             <a href="#" className="flex items-center px-6 py-3 border-y-2 border-r-2 border-black bg-white hover:bg-[#85aee1] transition font-bold text-sm uppercase tracking-wide">
                Features
              </a>
-             <a href="#" className="flex items-center px-6 py-3 border-y-2 border-r-2 border-black bg-white hover:bg-[#f55bf9] transition font-bold text-sm uppercase tracking-wide">
+             <a href="#" className="flex items-center px-6 py-3 border-y-2 border-r-2 border-black bg-white hover:bg-[#85aee1] transition font-bold text-sm uppercase tracking-wide">
                Pricing
              </a>
-             <Link to="/login" className="flex items-center px-6 py-3 border-y-2 border-r-2 border-black bg-white hover:bg-[#f55bf9] transition font-bold text-sm uppercase tracking-wide">
+             <Link to="/login" className="flex items-center px-6 py-3 border-y-2 border-r-2 border-black bg-white hover:bg-[#85aee1] transition font-bold text-sm uppercase tracking-wide">
                Login
              </Link>
           </div>

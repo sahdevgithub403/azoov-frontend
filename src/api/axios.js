@@ -23,10 +23,17 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Handle authentication errors (401) and forbidden errors (403)
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      // Clear invalid tokens
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+
+      // Only redirect if not already on login page
+      if (window.location.pathname !== '/login') {
+        console.error('Authentication failed. Please log in again.');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

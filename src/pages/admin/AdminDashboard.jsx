@@ -79,8 +79,6 @@ const AdminDashboard = () => {
         }
     ];
 
-
-
     const revenueData = [
         { name: 'Mon', revenue: 4000, orders: 240 },
         { name: 'Tue', revenue: 3000, orders: 139 },

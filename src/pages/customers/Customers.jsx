@@ -9,6 +9,21 @@ import {
 import Loader from "../../components/common/Loader";
 import Modal from "../../components/common/Modal";
 import Pagination from "../../components/common/Pagination";
+import { 
+  Search, 
+  Filter, 
+  Plus, 
+  Users, 
+  UserPlus, 
+  AlertCircle, 
+  MoreHorizontal, 
+  Edit, 
+  Trash2,
+  Phone,
+  Mail,
+  MapPin,
+  ChevronDown
+} from "lucide-react";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -134,20 +149,22 @@ const Customers = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[80vh] bg-[#F7F9FB]">
+      <div className="flex items-center justify-center min-h-[60vh]">
         <Loader />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Page Header */}
-      <div>
-        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Customers</h1>
-        <p className="text-gray-500 mt-2 font-medium">
-          Manage relationships and track client history.
-        </p>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Customers</h1>
+          <p className="text-gray-500 mt-2">
+            Manage relationships and track client history.
+          </p>
+        </div>
       </div>
 
       {/* Action Bar: Search & Buttons */}
@@ -158,182 +175,183 @@ const Customers = () => {
             placeholder="Search by name, email, or phone..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            // Neo-Brutalist Input: Bold Border + Rounded-3xl + Hard Shadow on Focus
-            className="w-full px-4 py-3 pl-11 border-2 border-gray-900 rounded-3xl focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:-translate-y-[1px] transition-all placeholder:text-gray-400 font-medium text-gray-900"
+            className="w-full px-4 py-2.5 pl-11 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#189CAB]/20 focus:border-[#189CAB] transition-all text-gray-700 placeholder:text-gray-400 font-medium"
           />
-          <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-[#5B8DEF]">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-          </span>
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#189CAB]" size={18} />
         </div>
         
         {/* Filter Button */}
-        <button className="px-6 py-3 bg-white border-2 border-gray-900 text-gray-900 font-bold rounded-3xl hover:bg-gray-50 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-y-[1px]">
-          Filter
+        <button className="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all flex items-center gap-2 shadow-sm">
+          <Filter size={18} />
+          <span>Filter</span>
         </button>
 
-        {/* Add Customer Button: Primary Blue */}
+        {/* Add Customer Button */}
         <button
           onClick={() => handleOpenModal()}
-          className="px-6 py-3 bg-[#5B8DEF] hover:bg-[#4a7bdc] border-2 border-gray-900 text-white font-bold rounded-3xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[1px] transition-all active:shadow-none active:translate-y-[4px]"
+          className="px-6 py-2.5 bg-[#189CAB] hover:bg-[#148a9c] text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/20 transition-all hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
         >
-          + Add Customer
+          <Plus size={20} strokeWidth={2.5} />
+          Add Customer
         </button>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Total Customers */}
-        <div className="bg-white rounded-[20px] p-6 border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden group hover:translate-y-[-2px] transition-transform">
-          <div className="flex items-center gap-4 mb-4 relative z-10">
-            <div className="w-12 h-12 bg-blue-50 border-2 border-gray-900 rounded-xl flex items-center justify-center">
-              <span className="text-2xl">👥</span>
+        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+              <Users size={24} />
             </div>
+            <span className="text-xs font-bold text-gray-400 uppercase tracking-wide">All Time</span>
           </div>
-          <h3 className="text-gray-500 text-sm font-bold uppercase tracking-wide mb-1">Total Customers</h3>
-          <p className="text-4xl font-extrabold text-gray-900">{totalCustomers}</p>
+          <h3 className="text-gray-500 text-sm font-semibold uppercase tracking-wide mb-1">Total Customers</h3>
+          <p className="text-3xl font-bold text-gray-900">{totalCustomers}</p>
         </div>
 
         {/* New This Month */}
-        <div className="bg-white rounded-[20px] p-6 border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden group hover:translate-y-[-2px] transition-transform">
-          <div className="flex items-center gap-4 mb-4 relative z-10">
-            <div className="w-12 h-12 bg-green-50 border-2 border-gray-900 rounded-xl flex items-center justify-center">
-              <span className="text-2xl">➕</span>
+        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
+              <UserPlus size={24} />
             </div>
+             <span className="px-2.5 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-lg border border-green-100">
+              +{newThisMonth}
+            </span>
           </div>
-          <h3 className="text-gray-500 text-sm font-bold uppercase tracking-wide mb-1">New This Month</h3>
-          <p className="text-4xl font-extrabold text-gray-900">+{newThisMonth}</p>
+          <h3 className="text-gray-500 text-sm font-semibold uppercase tracking-wide mb-1">New This Month</h3>
+          <p className="text-3xl font-bold text-gray-900">{newThisMonth}</p>
         </div>
 
         {/* Incomplete Profiles */}
-        <div className="bg-white rounded-[20px] p-6 border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden group hover:translate-y-[-2px] transition-transform">
-          <div className="flex items-center gap-4 mb-4 relative z-10">
-            <div className="w-12 h-12 bg-orange-50 border-2 border-gray-900 rounded-xl flex items-center justify-center">
-              <span className="text-2xl">📄</span>
+        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+              <AlertCircle size={24} />
             </div>
+             <span className="px-2.5 py-1 bg-orange-50 text-orange-700 text-xs font-bold rounded-lg border border-orange-100">
+              Needs Attention
+            </span>
           </div>
-          <h3 className="text-gray-500 text-sm font-bold uppercase tracking-wide mb-1">Incomplete Profiles</h3>
-          <p className="text-4xl font-extrabold text-gray-900">
+          <h3 className="text-gray-500 text-sm font-semibold uppercase tracking-wide mb-1">Incomplete Profiles</h3>
+          <p className="text-3xl font-bold text-gray-900">
             {incompleteProfiles}
           </p>
         </div>
       </div>
 
       {/* Table Section */}
-      <div className="bg-white rounded-[20px] border-2 border-gray-900 overflow-hidden shadow-sm">
-        <table className="w-full">
-          <thead className="bg-gray-50 border-b-2 border-gray-100">
-            <tr>
-              <th className="px-6 py-4 text-left text-xs font-extrabold text-gray-900 uppercase tracking-wider">
-                <input type="checkbox" className="w-4 h-4 rounded border-2 border-gray-400 checked:bg-gray-900" />
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-extrabold text-gray-900 uppercase tracking-wider">
-                CUSTOMER
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-extrabold text-gray-900 uppercase tracking-wider">
-                PHONE
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-extrabold text-gray-900 uppercase tracking-wider">
-                EMAIL
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-extrabold text-gray-900 uppercase tracking-wider">
-                STATUS
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-extrabold text-gray-900 uppercase tracking-wider">
-                ACTIONS
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {paginatedCustomers.map((customer) => (
-              <tr key={customer.id} className="hover:bg-[#F7F9FB] transition-colors group">
-                <td className="px-6 py-4">
-                  <input type="checkbox" className="w-4 h-4 rounded border-2 border-gray-300" />
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center text-gray-900 font-bold group-hover:border-[#5B8DEF] group-hover:text-[#5B8DEF] transition-colors">
-                      {customer.name?.charAt(0) || "C"}
-                    </div>
-                    <div>
-                      <p className="font-bold text-gray-900">
-                        {customer.name}
-                      </p>
-                      <p className="text-xs text-gray-500 font-medium">
-                        Added{" "}
-                        {new Date(customer.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 text-gray-600 font-medium">
-                  {customer.phone || "-"}
-                </td>
-                <td className="px-6 py-4 text-gray-600 font-medium">
-                  {customer.email || "-"}
-                </td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-bold border ${
-                      customer.status === "Active"
-                        ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                        : "bg-orange-50 text-orange-700 border-orange-200"
-                    }`}
-                  >
-                    {customer.status || "Active"}
-                  </span>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => handleOpenModal(customer)}
-                      className="p-2 text-gray-400 hover:text-[#5B8DEF] hover:bg-[#5B8DEF]/10 rounded-lg transition-colors"
-                    >
-                      ✏️
-                    </button>
-                    <button
-                      onClick={() => handleDelete(customer.id)}
-                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                      🗑️
-                    </button>
-                  </div>
-                </td>
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50/80 border-b border-gray-100">
+              <tr>
+                <th className="px-6 py-4 text-left w-10">
+                  <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-[#189CAB] focus:ring-[#189CAB]" />
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Customer
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Contact Info
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {paginatedCustomers.map((customer) => (
+                <tr key={customer.id} className="hover:bg-gray-50/80 transition-colors group">
+                  <td className="px-6 py-4">
+                    <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-[#189CAB] focus:ring-[#189CAB]" />
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold group-hover:bg-[#189CAB] group-hover:text-white transition-colors">
+                        {customer.name?.charAt(0).toUpperCase() || "C"}
+                      </div>
+                      <div>
+                        <p className="font-bold text-gray-900">{customer.name}</p>
+                        <p className="text-xs text-gray-500 font-medium">
+                          ID: {customer.id.toString().slice(0, 6)}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <Phone size={14} className="text-gray-400" />
+                        {customer.phone || "-"}
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <Mail size={14} className="text-gray-400" />
+                        {customer.email || "-"}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${
+                        customer.status === "Active"
+                          ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                          : "bg-gray-50 text-gray-600 border-gray-200"
+                      }`}
+                    >
+                      {customer.status || "Active"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => handleOpenModal(customer)}
+                        className="p-2 text-gray-400 hover:text-[#189CAB] hover:bg-[#189CAB]/10 rounded-lg transition-all"
+                        title="Edit Customer"
+                      >
+                        <Edit size={18} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(customer.id)}
+                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                        title="Delete Customer"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {filteredCustomers.length === 0 && (
-          <p className="text-center py-12 text-gray-400 font-medium">No customers found</p>
+          <div className="text-center py-16">
+             <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300">
+               <Users size={32} />
+             </div>
+             <h3 className="text-gray-900 font-semibold mb-1">No customers found</h3>
+             <p className="text-gray-500 text-sm">Try adjusting your search query.</p>
+          </div>
         )}
 
         {totalPages > 1 && (
-          <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-               <p className="text-sm text-gray-500 font-bold">
-                Showing {(currentPage - 1) * itemsPerPage + 1}-
-                {Math.min(currentPage * itemsPerPage, filteredCustomers.length)}{" "}
-                of {filteredCustomers.length} customers
-              </p>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
+          <div className="p-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4 bg-gray-50/30">
+            <p className="text-sm text-gray-500 font-medium">
+              Showing <span className="font-bold text-gray-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
+              <span className="font-bold text-gray-900">{Math.min(currentPage * itemsPerPage, filteredCustomers.length)}</span> of{" "}
+              <span className="font-bold text-gray-900">{filteredCustomers.length}</span> customers
+            </p>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
         )}
       </div>
@@ -343,50 +361,68 @@ const Customers = () => {
         onClose={() => setIsModalOpen(false)}
         title={editingCustomer ? "Edit Customer" : "Add New Customer"}
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-bold text-gray-900 mb-1">Full Name</label>
-            <input 
-              type="text"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              required
-              className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-0 transition-colors font-medium"
-            />
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-1.5">
+            <label className="block text-sm font-semibold text-gray-700">Full Name</label>
+            <div className="relative group">
+               <input 
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                  placeholder="e.g. Alex Morgan"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#189CAB]/20 focus:border-[#189CAB] transition-all text-gray-700 font-medium placeholder:text-gray-400"
+                />
+                <Users className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-bold text-gray-900 mb-1">Email</label>
-            <input 
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-0 transition-colors font-medium"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+             <div className="space-y-1.5">
+                <label className="block text-sm font-semibold text-gray-700">Email</label>
+                <div className="relative group">
+                  <input 
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="alex@example.com"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#189CAB]/20 focus:border-[#189CAB] transition-all text-gray-700 font-medium placeholder:text-gray-400"
+                  />
+                  <Mail className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-sm font-semibold text-gray-700">Phone</label>
+                <div className="relative group">
+                   <input 
+                    type="text"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+1 (555) 000-0000"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#189CAB]/20 focus:border-[#189CAB] transition-all text-gray-700 font-medium placeholder:text-gray-400"
+                   />
+                   <Phone className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                </div>
+              </div>
           </div>
 
-          <div>
-             <label className="block text-sm font-bold text-gray-900 mb-1">Phone</label>
-             <input 
-              type="text"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-0 transition-colors font-medium"
-             />
-          </div>
-
-          <div>
-            <label className="block text-sm font-bold text-gray-900 mb-1">Address</label>
-            <input 
-              type="text"
-              value={formData.address}
-              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-0 transition-colors font-medium"
-            />
+          <div className="space-y-1.5">
+            <label className="block text-sm font-semibold text-gray-700">Address</label>
+            <div className="relative group">
+               <input 
+                  type="text"
+                  value={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  placeholder="123 Main St, Springfield"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#189CAB]/20 focus:border-[#189CAB] transition-all text-gray-700 font-medium placeholder:text-gray-400"
+                />
+                <MapPin className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            </div>
           </div>
           
-          <div>
-            <label className="block text-sm font-bold text-gray-900 mb-1">
+          <div className="space-y-1.5">
+            <label className="block text-sm font-semibold text-gray-700">
               Status
             </label>
             <div className="relative">
@@ -395,30 +431,30 @@ const Customers = () => {
                 onChange={(e) =>
                     setFormData({ ...formData, status: e.target.value })
                 }
-                className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 appearance-none font-medium bg-white"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#189CAB]/20 focus:border-[#189CAB] appearance-none font-medium text-gray-700 bg-white cursor-pointer"
                 >
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
                 </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                <div className="absolute inset-y-0 right-3.5 flex items-center pointer-events-none text-gray-400">
+                    <ChevronDown size={18} />
                 </div>
             </div>
           </div>
 
-          <div className="flex gap-4 pt-4">
+          <div className="flex gap-3 pt-4">
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className="flex-1 px-4 py-2 border-2 border-gray-200 text-gray-600 font-bold rounded-xl hover:border-gray-900 hover:text-gray-900 transition-colors"
+              className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-colors"
             >
               Cancel
             </button>
             <button 
                 type="submit" 
-                className="flex-1 px-4 py-2 bg-[#5B8DEF] border-2 border-transparent text-white font-bold rounded-xl hover:bg-[#4a7bdc] shadow-md hover:shadow-lg transition-all"
+                className="flex-1 px-4 py-2.5 bg-[#189CAB] border border-transparent text-white font-semibold rounded-xl hover:bg-[#148a9c] shadow-lg shadow-cyan-500/20 transition-all active:scale-[0.98]"
             >
-              {editingCustomer ? "Update" : "Create"}
+              {editingCustomer ? "Update Customer" : "Create Customer"}
             </button>
           </div>
         </form>

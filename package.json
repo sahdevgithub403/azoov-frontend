@@ -7,12 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node tests/check-and-run.js",
+    "test:auth": "node tests/run-tests.js --suite=authentication",
+    "test:dashboard": "node tests/run-tests.js --suite=dashboard",
+    "test:all": "node tests/run-tests.js --all"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.31.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.3.7",
     "@stomp/stompjs": "^7.2.1",
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.2",
@@ -35,6 +40,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "puppeteer": "^23.11.1",
     "vite": "^7.2.4"
   }
 }
